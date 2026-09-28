@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+Home | Calorie Counter
+{% endblock %}
+
+
+{% block content %}
+
+<div class="row align-items-center min-vh-75">
+
+    <div class="col-md-7">
+
+        <h1 class="display-4 fw-bold">
+
+            Track Your
+            <span class="text-primary">
+                Daily Calories
+            </span>
+
+        </h1>
+
+
+        <p class="lead text-muted mt-3">
+
+            Calculate your estimated calorie
+            requirement and keep track of
+            your daily food intake.
+
+        </p>
+
+
+        {% if user.is_authenticated %}
+
+        <a href="{% url 'dashboard' %}" class="btn btn-primary btn-lg mt-3">
+            Go to Dashboard
+        </a>
+
+        {% else %}
+
+        <a href="{% url 'user_register' %}" class="btn btn-primary btn-lg mt-3">
+            Get Started
+        </a>
+
+        <a href="{% url 'user_login' %}" class="btn btn-outline-primary btn-lg mt-3 ms-2">
+            Login
+        </a>
+
+        {% endif %}
+
+    </div>
+
+
+    <div class="col-md-5 mt-4 mt-md-0">
+
+        <div class="card shadow border-0">
+
+            <div class="card-body text-center p-5">
+
+                <h2>
+                    🔥
+                </h2>
+
+                <h4 class="fw-bold">
+                    Smart Calorie Tracking
+                </h4>
+
+                <p class="text-muted">
+                    Calculate, track and manage
+                    your daily calorie intake.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

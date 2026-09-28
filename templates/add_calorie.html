@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Add Calories
+{% endblock %}
+
+
+{% block content %}
+
+<div class="row justify-content-center">
+
+    <div class="col-md-6">
+
+        <div class="card shadow-sm border-0">
+
+            <div class="card-body p-4">
+
+                <h3 class="mb-4">
+                    Add Consumed Calories
+                </h3>
+
+
+                <form method="POST">
+
+                    {% csrf_token %}
+
+                    {{ form.as_p }}
+
+
+                    <button type="submit" class="btn btn-primary">
+
+                        Add Calorie
+
+                    </button>
+
+
+                    <a href="{% url 'dashboard' %}" class="btn btn-secondary">
+
+                        Cancel
+
+                    </a>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

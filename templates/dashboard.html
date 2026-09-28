@@ -1,0 +1,362 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Dashboard - Calorie Counter
+{% endblock %}
+
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <div>
+
+        <h2>
+            Welcome, {{ profile.name }} ({{request.user}})
+        </h2>
+
+        <p class="text-muted">
+            Your daily calorie summary
+        </p>
+
+    </div>
+
+    <a href="{% url 'add_calorie' %}" class="btn btn-primary">
+
+        + Add Food
+
+    </a>
+
+</div>
+
+
+{% if profile %}
+
+
+<!-- ================= SUMMARY CARDS ================= -->
+
+<div class="row g-4">
+
+
+    <!-- Required Calories -->
+
+    <div class="col-md-4">
+
+        <div class="card shadow-sm border-0 h-100">
+
+            <div class="card-body">
+
+                <h6 class="text-muted">
+                    Required Calories
+                </h6>
+
+                <h2 class="fw-bold text-primary">
+                    {{ required_calories }}
+                    <small class="fs-6">
+                        kcal
+                    </small>
+                </h2>
+
+                <p class="text-muted mb-0">
+                    Estimated daily requirement
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Consumed Calories -->
+
+    <div class="col-md-4">
+
+        <div class="card shadow-sm border-0 h-100">
+
+            <div class="card-body">
+
+                <h6 class="text-muted">
+                    Consumed Calories
+                </h6>
+
+                <h2 class="fw-bold text-success">
+                    {{ consumed_calories }}
+                    <small class="fs-6">
+                        kcal
+                    </small>
+                </h2>
+
+                <p class="text-muted mb-0">
+                    Calories consumed today
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Remaining Calories -->
+
+    <div class="col-md-4">
+
+        <div class="card shadow-sm border-0 h-100">
+
+            <div class="card-body">
+
+                <h6 class="text-muted">
+                    Remaining Calories
+                </h6>
+
+                <h2 class="fw-bold text-warning">
+                    {{ remaining_calories }}
+                    <small class="fs-6">
+                        kcal
+                    </small>
+                </h2>
+
+                <p class="text-muted mb-0">
+                    Calories remaining today
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+<!-- ================= PROGRESS ================= -->
+
+<div class="card shadow-sm border-0 mt-4">
+
+    <div class="card-body">
+
+        <div class="d-flex justify-content-between">
+
+            <h5 class="fw-bold">
+                Today's Progress
+            </h5>
+
+            <span>
+                {{ progress }}%
+            </span>
+
+        </div>
+
+        <div class="progress mt-3" style="height: 25px;">
+
+            <div class="progress-bar" role="progressbar"
+                style="--progress-width: {{ progress }}%; width: var(--progress-width);">
+
+                {{ progress }}%
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ================= GUIDELINE ================= -->
+
+<div class="alert alert-info mt-4">
+
+    <strong>Guideline:</strong>
+
+    {{ guideline }}
+
+</div>
+
+
+<!-- ================= FOOD TABLE ================= -->
+
+<div class="card shadow-sm border-0 mt-4">
+
+    <div class="card-body">
+
+        <div class="d-flex justify-content-between
+                    align-items-center mb-3">
+
+            <h5 class="fw-bold mb-0">
+                Today's Food
+            </h5>
+
+            <span class="text-muted">
+                {{ today }}
+            </span>
+
+            <a href="{% url 'add_calorie' %}" class="btn btn-outline-primary btn-sm">
+
+                Add Food
+
+            </a>
+
+        </div>
+
+
+        {% if calorie_items %}
+
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle">
+
+                <thead class="table-light">
+
+                    <tr>
+
+                        <th>#</th>
+                        <th>Food Item</th>
+                        <th>Calories</th>
+                        <th>Action</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for item in calorie_items %}
+
+                    <tr>
+
+                        <td>
+                            {{ forloop.counter }}
+                        </td>
+
+                        <td>
+                            {{ item.item_name }}
+                        </td>
+
+                        <td>
+                            {{ item.calorie_consumed }}
+                            kcal
+                        </td>
+
+                        <td>
+
+                            <a href="{% url 'delete_calorie' item.id %}" class="btn btn-sm btn-outline-danger"
+                                onclick="return confirm('Are you sure you want to delete this item?');">
+                                Delete
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        {% else %}
+
+        <div class="text-center py-5">
+
+            <h5 class="text-muted">
+                No food added today
+            </h5>
+
+            <p class="text-muted">
+                Start tracking your daily calories.
+            </p>
+
+            <a href="{% url 'add_calorie' %}" class="btn btn-primary">
+                Add Your First Food
+            </a>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+
+<!-- ================= PROFILE SUMMARY ================= -->
+
+<div class="card shadow-sm border-0 mt-4">
+
+    <div class="card-body">
+
+        <h5 class="fw-bold mb-3">
+            Profile Summary
+        </h5>
+
+        <div class="row">
+
+            <div class="col-md-2">
+                <strong>Name</strong>
+                <p>{{ profile.name }}</p>
+            </div>
+
+            <div class="col-md-2">
+                <strong>Age</strong>
+                <p>{{ profile.age }}</p>
+            </div>
+
+            <div class="col-md-2">
+                <strong>Height</strong>
+                <p>{{ profile.height }} cm</p>
+            </div>
+
+            <div class="col-md-2">
+                <strong>Weight</strong>
+                <p>{{ profile.weight }} kg</p>
+            </div>
+
+            <div class="col-md-2">
+                <strong>Edit Profile</strong>
+                <p><a href="{% url 'profile_view' %}" class="btn btn-outline-secondary btn-sm">Edit Profile</a></p>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+{% else %}
+
+
+<!-- ================= NO PROFILE ================= -->
+
+<div class="card shadow border-0">
+
+    <div class="card-body text-center py-5">
+
+        <h3 class="fw-bold">
+            Complete Your Profile
+        </h3>
+
+        <p class="text-muted">
+            Please enter your age, gender, height
+            and weight to calculate your
+            calorie requirement.
+        </p>
+
+        <a href="{% url 'profile_view' %}" class="btn btn-primary">
+            Complete Profile
+        </a>
+
+    </div>
+
+</div>
+
+
+{% endif %}
+
+{% endblock %}
